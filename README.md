@@ -14,3 +14,8 @@ Dead simple summarization API
 * python -c "from summarizer import db;db.create_all()"
 * FLASK_APP=summarizer FLASK_ENV=development flask run
 * go to http://localhost:5000/
+
+
+### How do I run the tests?
+
+* python test.py
