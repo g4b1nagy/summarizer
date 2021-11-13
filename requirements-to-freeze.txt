@@ -1,3 +1,4 @@
 # See: https://kennethreitz.org/essays/2016/02/25/a-better-pip-workflow
 
 flask
+Flask-SQLAlchemy
