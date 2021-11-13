@@ -84,28 +84,8 @@ def document_get(document_id):
 # If you access the URL without a trailing slash,
 # Flask redirects you to the canonical URL with the trailing slash.
 @app.route('/document/', methods=['POST'])
-def document_post():
-    """Create a new document and return its id."""
-
-    # The request Content-Type may be either
-    # application/json or
-    # application/x-www-form-urlencoded
-    json_data = request.get_json()
-    if json_data is not None:
-        text = json_data.get('text')
-    else:
-        text = request.form.get('text')
-    if text is None:
-        return jsonify(message='Missing required field: text'), 400
-    else:
-        document = Document(text=text, summary=get_summary(text))
-        db.session.add(document)
-        db.session.commit()
-        return jsonify(document_id=document.id)
-
-
 @app.route('/document/<int:document_id>', methods=['PUT'])
-def document_put(document_id):
+def document_post_or_put(document_id=None):
     """Create or update the document with the given id."""
 
     # The request Content-Type may be either
@@ -119,7 +99,10 @@ def document_put(document_id):
     if text is None:
         return jsonify(message='Missing required field: text'), 400
     else:
-        document = db.session.query(Document).get(document_id) or Document()
+        if document_id is not None:
+            document = db.session.query(Document).get(document_id) or Document()
+        else:
+            document = Document()
         document.id = document_id
         document.text = text
         document.summary = get_summary(text)
